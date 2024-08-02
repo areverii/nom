@@ -5,6 +5,7 @@
     "main": "mealplan.js",
     "type": "module",
     "scripts": {
+        "start": "node mealplan.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
@@ -12,7 +13,8 @@
     "license": "ISC",
     "dependencies": {
         "dotenv": "^10.0.0",
-        "node-fetch": "^3.0.0",
+        "langchain": "^0.2.12",
+        "node-fetch": "^3.3.2",
         "openai": "^4.53.2"
     }
 }
