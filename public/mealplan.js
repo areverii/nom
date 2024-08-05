@@ -3,14 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the input event listener
     function initializeInputListener(inputElement) {
+        inputElement.addEventListener('input', adjustHeight);
         inputElement.addEventListener('keypress', async (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault();
                 const inputText = inputElement.value.trim();
                 if (inputText) {
-                    // Disable the input and make it read-only
+                    // Make the textarea uneditable and keep the shape
                     inputElement.setAttribute('readonly', true);
-                    inputElement.setAttribute('placeholder', '');
+                    inputElement.style.height = 'auto';
+                    inputElement.style.height = inputElement.scrollHeight + 'px';
+
+                    // Remove the focus outline
+                    inputElement.style.outline = 'none';
 
                     // Create a new agent response bubble
                     const agentBubble = document.createElement('div');
@@ -33,8 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const newUserInputBubble = document.createElement('div');
                     newUserInputBubble.className = 'chat-bubble right';
                     newUserInputBubble.id = 'user-input-bubble';
-                    const newInput = document.createElement('input');
-                    newInput.type = 'text';
+                    const newInput = document.createElement('textarea');
                     newInput.id = 'user-input';
                     newInput.placeholder = 'type something...';
                     newUserInputBubble.appendChild(newInput);
@@ -47,6 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Adjust the height of the textarea dynamically
+    function adjustHeight(event) {
+        const textarea = event.target;
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    // Focus the current input field on any keypress
+    document.addEventListener('keypress', (event) => {
+        const currentInput = document.querySelector('.chat-bubble.right textarea:not([readonly])');
+        if (currentInput) {
+            currentInput.focus();
+        }
+    });
 
     // Initialize the first input listener
     const initialInput = document.getElementById('user-input');

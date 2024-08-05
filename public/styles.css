@@ -95,6 +95,7 @@ body, html {
     margin: 10px;
     max-width: 60%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
 }
 
 .chat-bubble.left {
@@ -108,22 +109,22 @@ body, html {
     align-self: flex-end;
 }
 
-.chat-bubble.right input {
+.chat-bubble.right textarea {
     border: none;
     background: transparent;
     color: #fff;
     font-size: 18px;
     width: 100%;
+    resize: none;
+    overflow: hidden;
 }
 
-.chat-bubble.right input::placeholder {
+.chat-bubble.right textarea::placeholder {
     color: #fff;
 }
 
-/* Disable input but keep the same appearance */
-.chat-bubble.right input[readonly] {
-    background: transparent;
-    color: #fff;
+.chat-bubble.right textarea:focus {
+    outline: none;
 }
 
 /* Divider */
