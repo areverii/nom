@@ -1,18 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     const chatBox = document.getElementById('chat-box');
-    
+
     // Initialize the input event listener
-    function initializeInputListener() {
-        const userInput = document.getElementById('user-input');
-        userInput.addEventListener('keypress', async (event) => {
+    function initializeInputListener(inputElement) {
+        inputElement.addEventListener('keypress', async (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault();
-                const inputText = userInput.value.trim();
+                const inputText = inputElement.value.trim();
                 if (inputText) {
-                    // Change the input bubble to a regular chat bubble with text
-                    const userBubble = document.getElementById('user-input-bubble');
-                    userBubble.innerHTML = `<p>${inputText}</p>`;
-                    
+                    // Disable the input and make it read-only
+                    inputElement.setAttribute('readonly', true);
+                    inputElement.setAttribute('placeholder', '');
+
                     // Create a new agent response bubble
                     const agentBubble = document.createElement('div');
                     agentBubble.className = 'chat-bubble left';
@@ -34,18 +33,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     const newUserInputBubble = document.createElement('div');
                     newUserInputBubble.className = 'chat-bubble right';
                     newUserInputBubble.id = 'user-input-bubble';
-                    newUserInputBubble.innerHTML = '<input type="text" id="user-input" placeholder="type something...">';
+                    const newInput = document.createElement('input');
+                    newInput.type = 'text';
+                    newInput.id = 'user-input';
+                    newInput.placeholder = 'type something...';
+                    newUserInputBubble.appendChild(newInput);
                     chatBox.appendChild(newUserInputBubble);
 
                     // Update the user input variable and reinitialize the event listener
-                    newUserInputBubble.querySelector('input').focus();
-                    initializeInputListener();
+                    newInput.focus();
+                    initializeInputListener(newInput);
                 }
             }
         });
     }
 
-    initializeInputListener(); // Initialize the first input listener
+    // Initialize the first input listener
+    const initialInput = document.getElementById('user-input');
+    initializeInputListener(initialInput);
 });
 
 async function call_agent(input) {

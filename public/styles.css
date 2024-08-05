@@ -120,6 +120,12 @@ body, html {
     color: #fff;
 }
 
+/* Disable input but keep the same appearance */
+.chat-bubble.right input[readonly] {
+    background: transparent;
+    color: #fff;
+}
+
 /* Divider */
 .divider {
     width: 100%;
