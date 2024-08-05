@@ -1,41 +1,79 @@
-document.getElementById('meal-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const input = document.getElementById('meal-input').value;
+document.addEventListener('DOMContentLoaded', () => {
+    const userInput = document.getElementById('user-input');
+    const chatBox = document.getElementById('chat-box');
 
-    // Clear the input field
-    document.getElementById('meal-input').value = '';
+    userInput.addEventListener('keypress', async (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const inputText = userInput.value.trim();
+            if (inputText) {
+                // Change the input bubble to a regular chat bubble with text
+                const userBubble = document.getElementById('user-input-bubble');
+                userBubble.innerHTML = `<p>${inputText}</p>`;
+                
+                // Create a new agent response bubble
+                const agentBubble = document.createElement('div');
+                agentBubble.className = 'chat-bubble left';
+                agentBubble.innerHTML = '<p>...</p>';
+                chatBox.appendChild(agentBubble);
 
-    // Append user message to chat
-    appendMessage(input, 'user');
+                // Scroll to the bottom of the chat box
+                chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Call agent function and handle response
-    const response = await callAgent(input);
-    appendMessage(response, 'bot');
+                // Call the agent function
+                const response = await call_agent(inputText);
+                if (response && response.response) {
+                    agentBubble.innerHTML = `<p>${response.response}</p>`;
+                } else {
+                    agentBubble.innerHTML = '<p>Sorry, I couldn\'t generate a meal plan. Please try again.</p>';
+                }
 
-    // Handle meal plan display
-    displayMealPlan(response.meal_plan);
-});
+                // Create a new user input bubble
+                const newUserInputBubble = document.createElement('div');
+                newUserInputBubble.className = 'chat-bubble right';
+                newUserInputBubble.id = 'user-input-bubble';
+                newUserInputBubble.innerHTML = '<input type="text" id="user-input" placeholder="type something...">';
+                chatBox.appendChild(newUserInputBubble);
 
-function appendMessage(message, sender) {
-    const chatContainer = document.querySelector('.chat-container');
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('chat-message', sender);
-    messageElement.innerHTML = `<p>${message}</p>`;
-    chatContainer.appendChild(messageElement);
-}
+                // Update the user input variable and event listener
+                userInput.value = '';
+                const newUserInput = document.getElementById('user-input');
+                newUserInput.focus();
 
-function displayMealPlan(mealPlan) {
-    const mealPlanContainer = document.getElementById('meal-plan');
-    mealPlanContainer.innerHTML = '';
-    mealPlan.days.forEach(day => {
-        const mealCard = document.createElement('div');
-        mealCard.classList.add('meal-card');
-        mealCard.innerHTML = `
-            <h3>${day.day}</h3>
-            <p><strong>Breakfast:</strong> ${day.meals.breakfast}</p>
-            <p><strong>Lunch:</strong> ${day.meals.lunch}</p>
-            <p><strong>Dinner:</strong> ${day.meals.dinner}</p>
-        `;
-        mealPlanContainer.appendChild(mealCard);
+                newUserInput.addEventListener('keypress', async (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        const inputText = newUserInput.value.trim();
+                        if (inputText) {
+                            const userBubble = document.getElementById('user-input-bubble');
+                            userBubble.innerHTML = `<p>${inputText}</p>`;
+
+                            const agentBubble = document.createElement('div');
+                            agentBubble.className = 'chat-bubble left';
+                            agentBubble.innerHTML = '<p>...</p>';
+                            chatBox.appendChild(agentBubble);
+
+                            chatBox.scrollTop = chatBox.scrollHeight;
+
+                            const response = await call_agent(inputText);
+                            if (response && response.response) {
+                                agentBubble.innerHTML = `<p>${response.response}</p>`;
+                            } else {
+                                agentBubble.innerHTML = '<p>Sorry, I couldn\'t generate a meal plan. Please try again.</p>';
+                            }
+
+                            const newUserInputBubble = document.createElement('div');
+                            newUserInputBubble.className = 'chat-bubble right';
+                            newUserInputBubble.id = 'user-input-bubble';
+                            newUserInputBubble.innerHTML = '<input type="text" id="user-input" placeholder="type something...">';
+                            chatBox.appendChild(newUserInputBubble);
+
+                            newUserInput.value = '';
+                            newUserInput.focus();
+                        }
+                    }
+                });
+            }
+        }
     });
-}
+});

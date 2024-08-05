@@ -42,7 +42,6 @@ body, html {
 /* Chat container */
 .chat-container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     width: 90%;
     max-width: 1371px;
@@ -83,6 +82,8 @@ body, html {
     flex-grow: 1;
     padding-left: 2rem;
     width: calc(100% - 176px);
+    overflow-y: auto;
+    max-height: 400px;
 }
 
 /* Chat bubbles */
