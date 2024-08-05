@@ -1,0 +1,61 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #ff6f61;
+    color: white;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+main {
+    width: 80%;
+    margin-top: 20px;
+}
+
+#input-section {
+    margin-bottom: 20px;
+}
+
+#meal-form {
+    display: flex;
+    justify-content: center;
+}
+
+#meal-input {
+    width: 60%;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff5a4c;
+}
+
+#output-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#meal-plan {
+    margin-top: 20px;
+}

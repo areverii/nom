@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { ChatOpenAI } from '@langchain/openai';
 import { DynamicTool } from '@langchain/core/tools';
 import { ChatPromptTemplate, MessagesPlaceholder } from '@langchain/core/prompts';
@@ -7,28 +6,8 @@ import { RunnableSequence } from '@langchain/core/runnables';
 import { AgentExecutor } from 'langchain/agents';
 import { formatToOpenAIFunctionMessages } from 'langchain/agents/format_scratchpad';
 import { OpenAIFunctionsAgentOutputParser } from 'langchain/agents/openai/output_parser';
-import { AIMessage, HumanMessage } from '@langchain/core/messages';
 import { z } from 'zod';
-import { MongoClient } from 'mongodb';
-
-// database connection setup
-const uri = process.env.MONGODB_URI;
-
-let client;
-let db;
-
-/* 
- * function to connect to the MongoDB database
- * @returns {Promise<Object>} - the MongoDB database instance
- */
-async function connect_to_database() {
-  if (!client || !client.isConnected()) {
-    client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    await client.connect();
-    db = client.db('your_database_name'); // NEED TO REPLACE
-  }
-  return db;
-}
+import { connect_to_database, close_database } from './db.js';
 
 const openai_api_key = process.env.OPENAI_API_KEY;
 
@@ -155,72 +134,9 @@ async function get_user_preferences(userId) {
   } catch (error) {
     console.error('Error connecting to the database or fetching preferences:', error);
     return {};
+  } finally {
+    await close_database();  // Close the database connection after fetching preferences
   }
 }
 
-// current example
-const user_input = "I want to bake a creme brulee recipe one night, and I want at least one Italian recipe.";
-const user_id = "user123"; // replace with actual user ID
-
-(async () => {
-  const preferences = await get_user_preferences(user_id);
-  const full_input = `${user_input}\nUser Preferences: ${JSON.stringify(preferences)}`;
-  const result = await call_agent(full_input);
-  console.log('Parsed and Verified Meal Plan:', result);
-})();
-
-// memory for stateful conversation
-const MEMORY_KEY = 'chat_history';
-const chat_history = [];
-
-const memory_prompt = ChatPromptTemplate.fromMessages([
-  ['system', 'You are a helpful assistant for an app called Nom. Your role is to generate or modify meal plans for the user. By default, meal plans contain 3 meals a day for a week. When creating a meal plan, start it at the next upcoming meal based on the time and day you receive the request.'],
-  new MessagesPlaceholder(MEMORY_KEY),
-  ['user', '{input}'],
-  new MessagesPlaceholder('agent_scratchpad'),
-]);
-
-const agent_with_memory = RunnableSequence.from([
-  {
-    input: (i) => i.input,
-    agent_scratchpad: (i) => formatToOpenAIFunctionMessages(i.steps),
-    chat_history: (i) => i.chat_history,
-  },
-  memory_prompt,
-  model_with_functions,
-  new OpenAIFunctionsAgentOutputParser(),
-]);
-
-const executor_with_memory = AgentExecutor.fromAgentAndTools({
-  agent: agent_with_memory,
-  tools,
-});
-
-/* 
- * function to call the agent with memory
- * @param {string} input - the user input to be processed by the agent
- * @returns {Promise<string>} - the final output from the agent
- */
-async function call_agent_with_memory(input) {
-  console.log(`Calling agent executor with query: ${input}`);
-  const result = await executor_with_memory.invoke({ input, chat_history });
-  console.log(result);
-
-  chat_history.push(new HumanMessage(input));
-  chat_history.push(new AIMessage(result.output));
-
-  return result.output;
-}
-
-// example code of how to do followup input
-// const user_input_with_memory = "How many letters in the word educa?";
-// call_agent_with_memory(user_input_with_memory).then(result => {
-//   console.log('Final Result:', result);
-
-//   const follow_up_input = "Is that a real English word?";
-//   return call_agent_with_memory(follow_up_input);
-// }).then(result => {
-//   console.log('Follow-Up Result:', result);
-// }).catch(error => {
-//   console.error('Error:', error);
-// });
+export { call_agent, get_user_preferences };

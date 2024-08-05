@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>nom!</h1>
+    </header>
+    <main>
+        <section id="input-section">
+            <form id="meal-form">
+                <input type="text" id="meal-input" placeholder="Enter your meal planning request..." required>
+                <button type="submit">generate meal plan</button>
+            </form>
+        </section>
+        <section id="output-section">
+            <h2>generate meal plan</h2>
+            <div id="meal-plan"></div>
+            <h2>Response</h2>
+            <div id="response"></div>
+        </section>
+    </main>
+    <script src="mealplan.js"></script>
+</body>
+</html>
