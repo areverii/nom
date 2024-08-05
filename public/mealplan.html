@@ -7,16 +7,29 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>nom!</h1>
+    <header class="header">
+        <ul>
+            <li><a href="#">Preferences</a></li>
+            <li><a href="#">Who we are</a></li>
+            <li><a href="#">My profile</a></li>
+        </ul>
     </header>
-    <main>
-        <section id="input-section">
-            <form id="meal-form">
-                <input type="text" id="meal-input" placeholder="Enter your meal planning request..." required>
-                <button type="submit">generate meal plan</button>
-            </form>
-        </section>
+    <main class="main">
+        <div class="chat-container">
+            <div class="nom-logo-container">
+                <img src="assets/nom_left_box.svg" alt="Nom background" class="nom-background">
+                <img src="assets/nom.svg" alt="Nom logo" class="nom-logo">
+            </div>
+            <div class="chat-box">
+                <div class="chat-bubble left">
+                    <p>hey! what kinda food are you feeling?</p>
+                </div>
+                <div class="chat-bubble right">
+                    <input type="text" placeholder="type something...">
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
         <section id="output-section">
             <div id="meal-plan"></div>
         </section>
