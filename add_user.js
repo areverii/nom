@@ -13,14 +13,8 @@ const collection = "users";
 app.get('/', function(req, res) {
     res.send(`
     <form action="/addUser" method="post">
-        <input type="number" name="calorieTarget" placeholder="What's Your Daily Calorie Target?">
-        <select name="dietType">
-            <option value="none">No Specific Diet</option>
-            <option value="vegan">Vegan</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="keto">Keto</option>
-            <option value="paleo">Paleo</option>
-        </select>
+        <input type="text" name="calorieTarget" placeholder="What's Your Daily Calorie Target?">
+        <input type="text" name="dietType" placeholder="Are You Following Any Specific Diet Style?">
         <input type="text" name="allergies" placeholder="Allergies (comma-separated)">
         <input type="submit" value="Submit Preferences">
     </form>
