@@ -43,6 +43,69 @@ body, html {
     overflow: hidden;
 }
 
+/* Preferences section */
+.preferences-section {
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.preferences-section h1 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 200;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Preferences form */
+.preferences-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-group.submit-button {
+    display: flex;
+    justify-content: center;
+}
+
+input[type="submit"] {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #FFBBD8;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: #ff9ccf;
+}
+
 /* Chat container */
 .chat-container {
     display: flex;
@@ -53,10 +116,9 @@ body, html {
     margin: 20px 0;
     position: relative;
     height: 60%;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
-/* NOM logo container */
 .nom-logo-container {
     position: absolute;
     top: 0;
@@ -192,6 +254,6 @@ body, html {
 }
 
 .meal-card p.meal strong {
-    margin-left: 80px;
+    margin-left: 40px;
     font-weight: 400;
 }

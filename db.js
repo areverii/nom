@@ -28,4 +28,4 @@ async function close_database() {
   }
 }
 
-export { connect_to_database, close_database };
+export { connect_to_database, close_database, uri };

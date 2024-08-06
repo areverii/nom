@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Preferences</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <ul>
+            <li><a href="mealplan.html">Meal Plan</a></li>
+            <li><a href="preferences.html">Preferences</a></li>
+            <li><a href="#">Who we are</a></li>
+            <li><a href="#">My profile</a></li>
+        </ul>
+    </header>
+    <main class="main">
+        <section class="preferences-section">
+            <h1>Set Your Preferences</h1>
+            <form id="preferences-form" class="preferences-form">
+                <div class="form-group">
+                    <label for="calorieTarget">Daily Calorie Target:</label>
+                    <input type="text" id="calorieTarget" name="calorieTarget" placeholder="e.g., 2000">
+                </div>
+                <div class="form-group">
+                    <label for="dietType">Diet Type:</label>
+                    <input type="text" id="dietType" name="dietType" placeholder="e.g., Vegetarian">
+                </div>
+                <div class="form-group">
+                    <label for="allergies">Allergies:</label>
+                    <input type="text" id="allergies" name="allergies" placeholder="e.g., Peanuts, Shellfish">
+                </div>
+                <div class="form-group submit-button">
+                    <input type="submit" value="Submit Preferences">
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="preferences.js"></script>
+</body>
+</html>
