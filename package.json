@@ -1,7 +1,7 @@
 {
     "name": "nom",
     "version": "1.0.0",
-    "description": "",
+    "description": "an app which generates mealplans that intuitively match your preferences using natural language.",
     "main": "server.js",
     "type": "module",
     "scripts": {
@@ -9,10 +9,9 @@
         "test": "echo \"error: no tests defined yet\" && exit 1"
     },
     "keywords": [],
-    "author": "",
+    "author": "nick woodward / areverii",
     "license": "ISC",
     "dependencies": {
-        "body-parser": "^1.20.2",
         "dotenv": "^10.0.0",
         "express": "^4.19.2",
         "langchain": "^0.2.12",
