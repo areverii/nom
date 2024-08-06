@@ -4,8 +4,8 @@ body, html {
     padding: 0;
     font-family: 'Inter', sans-serif;
     background: #FAFAF5;
-    height: 100%; /* Ensure full height */
-    overflow: hidden; /* Prevent scrolling on the entire page */
+    height: 100%;
+    overflow: hidden;
 }
 
 /* Header styles */
@@ -39,8 +39,8 @@ body, html {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: calc(100vh - 50px); /* Full height minus header */
-    overflow: hidden; /* Prevent extra scroll bar */
+    height: calc(100vh - 50px);
+    overflow: hidden;
 }
 
 /* Chat container */
@@ -52,8 +52,8 @@ body, html {
     border-radius: 10px;
     margin: 20px 0;
     position: relative;
-    height: 60%; /* Adjust height as needed */
-    overflow: hidden; /* Prevent extra scroll bar */
+    height: 60%;
+    overflow: hidden; 
 }
 
 /* NOM logo container */
@@ -87,12 +87,12 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 200px; /* Ensure the chat bubbles don't overlap the SVG */
+    padding-left: 200px;
     width: calc(100% - 200px);
     height: 100%;
-    overflow-y: auto; /* Ensure chat box is scrollable */
+    overflow-y: auto;
     position: relative;
-    z-index: 3; /* Ensure it stays on top of the SVG */
+    z-index: 3;
 }
 
 /* Chat bubbles */
@@ -153,7 +153,7 @@ body, html {
     margin: 20px 0;
     background: #FAFAF5;
     position: relative;
-    height: 30%; /* Adjust height as needed */
+    height: 30%;
 }
 
 #meal-plan {
