@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { connect_to_database, close_database } from './db.js';
@@ -11,27 +10,39 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const user = 'default'; // need to set at login
+// user is always default for now
+const user = 'default';
 
+/* endpoints for serving the different pages */
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'mealplan.html'));
 });
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
 
 app.get('/preferences', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'preferences.html'));
 });
 
+/* endpoint for submitting preferences form
+note: we ultimately parse everything as a normal string instead of requiring
+a certain form of input because the LLM can handle natural language input.
+this gives a lot more flexibility to users. */
 app.post('/updatePreferences', async (req, res) => {
     const { calorieTarget, dietType, allergies } = req.body;
 
     const userPreferences = {
         calorieTarget: calorieTarget.toString(),
         dietType: dietType.toString(),
-        allergies: allergies ? allergies.split(',').map(allergy => allergy.trim().toString()) : []
+        //allergies: allergies ? allergies.split(',').map(allergy => allergy.trim().toString()) : []
+        allergies: allergies.toString()
     };
 
     try {
@@ -43,22 +54,22 @@ app.post('/updatePreferences', async (req, res) => {
         );
         
         if (result.upsertedCount > 0) {
-            console.log(`A new user was added with ID: ${user}`);
+            console.log(`a new user was added with ID: ${user}`);
         } else if (result.modifiedCount > 0) {
-            console.log(`User preferences updated for user ID: ${user}`);
+            console.log(`user preferences updated for user ID: ${user}`);
         } else {
-            console.log(`No changes made to user ID: ${user}`);
+            console.log(`no changes made to user ID: ${user}`);
         }
 
         await close_database();
-        res.send("User preferences updated successfully!");
+        res.send("user preferences updated successfully!");
     } catch (error) {
-        console.error("An error occurred while updating preferences in the database:", error);
-        res.status(500).send("An error occurred while updating preferences in the database.");
+        console.error("an error occurred while updating preferences in the database:", error);
+        res.status(500).send("an error occurred while updating preferences in the database!");
     }
 });
 
-// meal plan generation endpoint
+/* endpoint that constructs the full agent input including preferences and calls call_agent to get a generated response */
 app.post('/generate', async (req, res) => {
     const { query } = req.body;
     const user_id = user;
@@ -69,11 +80,11 @@ app.post('/generate', async (req, res) => {
         const meal_plan = await call_agent(full_input);
         res.json(meal_plan);
     } catch (error) {
-        console.error('Error generating meal plan:', error);
-        res.status(500).send('Error generating meal plan');
+        console.error('error generating meal plan:', error);
+        res.status(500).send('error generating meal plan');
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`server running on port ${PORT}`);
 });

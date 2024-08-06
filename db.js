@@ -5,22 +5,22 @@ const uri = process.env.MONGODB_URI;
 
 let client;
 
-/* 
- * function to connect to the MongoDB database
- * @returns {Promise<Object>} - the MongoDB database instance
- */
+/* connect_to_database
+opens a connection to the mongo database.
+note: requires the MongoURI environment variable to be set!
+also requires that the IP of the connecting server is whitelisted!
+*/
 async function connect_to_database() {
   if (!client) {
-    client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    client = new MongoClient(uri, { });
     await client.connect();
   }
   return client.db('Meals');
 }
 
-/* 
- * function to close the MongoDB connection
- * @returns {Promise<void>}
- */
+/* close_database
+closes the connection to the mongo database
+*/
 async function close_database() {
   if (client) {
     await client.close();

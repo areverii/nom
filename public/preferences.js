@@ -1,3 +1,6 @@
+
+/* form used for submitting preferences to the mongodb database
+note: preferences are added for the current set user */
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('preferences-form');
     const submit_button = form.querySelector('input[type="submit"]');

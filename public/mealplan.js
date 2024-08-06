@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const chat_box = document.getElementById('chat-box');
 
+    /* 
+    handles setting up chat bubbles
+    notes: i wanted to make sure that chat bubbles didn't act like normal text inputs, rather
+    if you type anywhere it automatically focuses on the chat bubble, and once you
+    submit a chat bubble it stops being editable.
+    */
     function initialize_input_listener(input_element) {
         input_element.addEventListener('input', adjust_height);
         input_element.addEventListener('keypress', async (event) => {
@@ -46,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /* we need to adjust the scroll area after making a new user bubble */
     function adjust_height(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
@@ -63,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initialize_input_listener(initial_input);
 });
 
+/* this hooks up to agent.js to generate an LLM response */
 async function call_agent(input) {
     try {
         const response = await fetch('/generate', {
@@ -81,6 +89,8 @@ async function call_agent(input) {
     }
 }
 
+/* creates meal cards on the bottom half of the screen for each day of the meal plan 
+note: these are horizontally scrollable so they are supposed to go off the page. */
 function create_meal_plan(meal_plan) {
     const meal_plan_container = document.getElementById('meal-plan');
     meal_plan_container.innerHTML = '';
