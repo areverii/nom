@@ -41,15 +41,23 @@ const User = mongoose.model('User', dataSchema);
 
 app.post('/signup', (req, res) => {
     const { email, password } = req.body;
-    const newUser = new User({
-        email,
-        password
-    });
-    newUser.save().then(() => {
-        res.send('User registered successfully');
-    }).catch(err => {
-        res.send('Error registering user');
-    });
+    User.findOne({ email: email }).then(user => {
+        if (!user) {
+            const newUser = new User({
+                email,
+                password
+            });
+            newUser.save().then(() => {
+                res.send('User registered successfully');
+            }).catch(err => {
+                res.send('Error registering user');
+            });
+        }
+        else {
+            res.send('User already in system');
+        }
+        
+    })
 });
 
 app.post('/login', (req, res) => {
@@ -59,12 +67,15 @@ app.post('/login', (req, res) => {
         if (!user) {
             return res.send('User not found');
         }
-        
-        if (user.password !== password) {
-            return res.send('Incorrect password');
+        else {
+            if (user.password !== password) {
+                return res.send('Incorrect password');
+            }
+            else {
+                res.send('Login successful');
+            }
         }
-
-        res.send('Login successful');
+        
     }).catch(err => {
         res.send('Error logging in');
     });
