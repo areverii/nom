@@ -21,12 +21,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'mealplan.html'));
 });
 
-// preferences form
 app.get('/preferences', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'preferences.html'));
 });
 
-// update user preferences endpoint
 app.post('/updatePreferences', async (req, res) => {
     const { calorieTarget, dietType, allergies } = req.body;
 

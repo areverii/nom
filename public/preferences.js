@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('preferences-form');
-    const submitButton = form.querySelector('input[type="submit"]');
+    const submit_button = form.querySelector('input[type="submit"]');
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+        const form_data = new FormData(form);
+        const data = Object.fromEntries(form_data.entries());
 
         try {
             const response = await fetch('/updatePreferences', {
@@ -18,21 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                submitButton.value = 'Updated!';
+                submit_button.value = 'updated!';
                 setTimeout(() => {
-                    submitButton.value = 'Submit Preferences';
+                    submit_button.value = 'submit preferences';
                 }, 2000);
             } else {
-                submitButton.value = 'Error!';
+                submit_button.value = 'something went wrong!';
                 setTimeout(() => {
-                    submitButton.value = 'Submit Preferences';
+                    submit_button.value = 'submit preferences';
                 }, 2000);
             }
         } catch (error) {
-            console.error('An error occurred while updating preferences:', error);
-            submitButton.value = 'Error!';
+            console.error('error while updating preferences:', error);
+            submit_button.value = 'something went wrong!';
             setTimeout(() => {
-                submitButton.value = 'Submit Preferences';
+                submit_button.value = 'submit preferences';
             }, 2000);
         }
     });

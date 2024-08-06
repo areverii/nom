@@ -1,69 +1,69 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const chatBox = document.getElementById('chat-box');
+    const chat_box = document.getElementById('chat-box');
 
-    function initializeInputListener(inputElement) {
-        inputElement.addEventListener('input', adjustHeight);
-        inputElement.addEventListener('keypress', async (event) => {
+    function initialize_input_listener(input_element) {
+        input_element.addEventListener('input', adjust_height);
+        input_element.addEventListener('keypress', async (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault();
-                const inputText = inputElement.value.trim();
-                if (inputText) {
-                    inputElement.setAttribute('readonly', true);
-                    inputElement.style.height = 'auto';
-                    inputElement.style.height = inputElement.scrollHeight + 'px';
-                    inputElement.style.outline = 'none';
+                const input_text = input_element.value.trim();
+                if (input_text) {
+                    input_element.setAttribute('readonly', true);
+                    input_element.style.height = 'auto';
+                    input_element.style.height = input_element.scrollHeight + 'px';
+                    input_element.style.outline = 'none';
 
-                    const agentBubble = document.createElement('div');
-                    agentBubble.className = 'chat-bubble left';
-                    agentBubble.innerHTML = '<p>...</p>';
-                    chatBox.appendChild(agentBubble);
+                    const agent_bubble = document.createElement('div');
+                    agent_bubble.className = 'chat-bubble left';
+                    agent_bubble.innerHTML = '<p>...</p>';
+                    chat_box.appendChild(agent_bubble);
 
-                    chatBox.scrollTop = chatBox.scrollHeight;
+                    chat_box.scrollTop = chat_box.scrollHeight;
 
-                    const response = await callAgent(inputText);
+                    const response = await call_agent(input_text);
                     if (response && response.response) {
-                        agentBubble.innerHTML = `<p>${response.response}</p>`;
-                        createMealPlan(response.meal_plan);
+                        agent_bubble.innerHTML = `<p>${response.response}</p>`;
+                        create_meal_plan(response.meal_plan);
                     } else {
-                        agentBubble.innerHTML = '<p>Sorry, I couldn\'t generate a meal plan. Please try again.</p>';
+                        agent_bubble.innerHTML = '<p>it seems something went wrong, please try again! </p>';
                     }
 
-                    const newUserInputBubble = document.createElement('div');
-                    newUserInputBubble.className = 'chat-bubble right';
-                    newUserInputBubble.id = 'user-input-bubble';
-                    const newInput = document.createElement('textarea');
-                    newInput.id = 'user-input';
-                    newInput.placeholder = 'type something...';
-                    newUserInputBubble.appendChild(newInput);
-                    chatBox.appendChild(newUserInputBubble);
+                    const new_user_input_bubble = document.createElement('div');
+                    new_user_input_bubble.className = 'chat-bubble right';
+                    new_user_input_bubble.id = 'user-input-bubble';
+                    const new_input = document.createElement('textarea');
+                    new_input.id = 'user-input';
+                    new_input.placeholder = 'type something...';
+                    new_user_input_bubble.appendChild(new_input);
+                    chat_box.appendChild(new_user_input_bubble);
 
-                    newInput.focus();
-                    initializeInputListener(newInput);
+                    new_input.focus();
+                    initialize_input_listener(new_input);
 
-                    chatBox.scrollTop = chatBox.scrollHeight;
+                    chat_box.scrollTop = chat_box.scrollHeight;
                 }
             }
         });
     }
 
-    function adjustHeight(event) {
+    function adjust_height(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
     }
 
     document.addEventListener('keypress', (event) => {
-        const currentInput = document.querySelector('.chat-bubble.right textarea:not([readonly])');
-        if (currentInput) {
-            currentInput.focus();
+        const current_input = document.querySelector('.chat-bubble.right textarea:not([readonly])');
+        if (current_input) {
+            current_input.focus();
         }
     });
 
-    const initialInput = document.getElementById('user-input');
-    initializeInputListener(initialInput);
+    const initial_input = document.getElementById('user-input');
+    initialize_input_listener(initial_input);
 });
 
-async function callAgent(input) {
+async function call_agent(input) {
     try {
         const response = await fetch('/generate', {
             method: 'POST',
@@ -81,34 +81,34 @@ async function callAgent(input) {
     }
 }
 
-function createMealPlan(mealPlan) {
-    const mealPlanContainer = document.getElementById('meal-plan');
-    mealPlanContainer.innerHTML = '';
+function create_meal_plan(meal_plan) {
+    const meal_plan_container = document.getElementById('meal-plan');
+    meal_plan_container.innerHTML = '';
 
-    mealPlan.days.forEach((day, index) => {
-        const mealCard = document.createElement('div');
-        mealCard.className = 'meal-card';
+    meal_plan.days.forEach((day, index) => {
+        const meal_card = document.createElement('div');
+        meal_card.className = 'meal-card';
 
-        const dayLabel = document.createElement('h3');
-        dayLabel.textContent = day.day;
+        const day_label = document.createElement('h3');
+        day_label.textContent = day.day;
 
-        const breakfastLabel = document.createElement('p');
-        breakfastLabel.className = 'meal';
-        breakfastLabel.innerHTML = `<strong>Breakfast</strong> ${day.meals.breakfast}`;
+        const breakfast_label = document.createElement('p');
+        breakfast_label.className = 'meal';
+        breakfast_label.innerHTML = `<strong>Breakfast</strong> ${day.meals.breakfast}`;
 
-        const lunchLabel = document.createElement('p');
-        lunchLabel.className = 'meal';
-        lunchLabel.innerHTML = `<strong>Lunch</strong> ${day.meals.lunch}`;
+        const lunch_label = document.createElement('p');
+        lunch_label.className = 'meal';
+        lunch_label.innerHTML = `<strong>Lunch</strong> ${day.meals.lunch}`;
 
-        const dinnerLabel = document.createElement('p');
-        dinnerLabel.className = 'meal';
-        dinnerLabel.innerHTML = `<strong>Dinner</strong> ${day.meals.dinner}`;
+        const dinner_label = document.createElement('p');
+        dinner_label.className = 'meal';
+        dinner_label.innerHTML = `<strong>Dinner</strong> ${day.meals.dinner}`;
 
-        mealCard.appendChild(dayLabel);
-        mealCard.appendChild(breakfastLabel);
-        mealCard.appendChild(lunchLabel);
-        mealCard.appendChild(dinnerLabel);
+        meal_card.appendChild(day_label);
+        meal_card.appendChild(breakfast_label);
+        meal_card.appendChild(lunch_label);
+        meal_card.appendChild(dinner_label);
 
-        mealPlanContainer.appendChild(mealCard);
+        meal_plan_container.appendChild(meal_card);
     });
 }
