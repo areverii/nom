@@ -40,14 +40,35 @@ const dataSchema = new Schema({
 const User = mongoose.model('User', dataSchema);
 
 app.post('/signup', (req, res) => {
-    const {username, email, password} = req.body;
+    const { email, password } = req.body;
     const newUser = new User({
-        username,
         email,
-        password,
+        password
     });
-    newUser.save();
-})
+    newUser.save().then(() => {
+        res.send('User registered successfully');
+    }).catch(err => {
+        res.send('Error registering user');
+    });
+});
+
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+
+    User.findOne({ email: email }).then(user => {
+        if (!user) {
+            return res.send('User not found');
+        }
+        
+        if (user.password !== password) {
+            return res.send('Incorrect password');
+        }
+
+        res.send('Login successful');
+    }).catch(err => {
+        res.send('Error logging in');
+    });
+});
 
 app.listen(port, () => {
     console.log('server running at port ' + port);
