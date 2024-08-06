@@ -55,7 +55,7 @@ Make sure to replace the placeholders "response:" and "json:" with the actual co
   new MessagesPlaceholder('agent_scratchpad'),
 ]);
 
-/* set up the langchain agent */ 
+/* set up the langchain agent tools and agent (sequence, executor) */ 
 const model_with_functions = model.bind({
   functions: tools.map(tool => convertToOpenAIFunction(tool)),
 });
