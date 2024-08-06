@@ -4,6 +4,8 @@ body, html {
     padding: 0;
     font-family: 'Inter', sans-serif;
     background: #FAFAF5;
+    height: 100%; /* Ensure full height */
+    overflow: hidden; /* Prevent scrolling on the entire page */
 }
 
 /* Header styles */
@@ -37,45 +39,47 @@ body, html {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    height: calc(100vh - 50px); /* Full height minus header */
+    overflow: hidden; /* Prevent extra scroll bar */
 }
 
 /* Chat container */
 .chat-container {
     display: flex;
-    justify-content: flex-start;
     width: 90%;
     max-width: 1371px;
     padding: 20px;
     border-radius: 10px;
     margin: 20px 0;
     position: relative;
-    overflow-y: auto;
-    height: 400px;
+    height: 60%; /* Adjust height as needed */
+    overflow: hidden; /* Prevent extra scroll bar */
 }
 
 /* NOM logo container */
 .nom-logo-container {
     position: absolute;
-    top: 20px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 176px;
     height: 100%;
-    flex-shrink: 0;
+    z-index: 1;
 }
 
 .nom-background {
     position: absolute;
-    top: -20px;
+    top: 0;
     left: 0;
-    width: 100%;
+    width: 176px;
     height: 100%;
 }
 
 .nom-logo {
     position: absolute;
-    top: 10px;
+    top: 20px;
     left: 38px;
     width: 99px;
+    z-index: 2;
 }
 
 /* Chat box area */
@@ -83,10 +87,12 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 7rem;
-    width: calc(100% - 176px);
-    overflow-y: auto;
-    max-height: 700px;
+    padding-left: 200px; /* Ensure the chat bubbles don't overlap the SVG */
+    width: calc(100% - 200px);
+    height: 100%;
+    overflow-y: auto; /* Ensure chat box is scrollable */
+    position: relative;
+    z-index: 3; /* Ensure it stays on top of the SVG */
 }
 
 /* Chat bubbles */
@@ -95,16 +101,14 @@ body, html {
     align-items: center;
     padding: 10px 20px;
     border-radius: 10px;
-    margin: 10px;
+    margin: 10px 0;
     max-width: 60%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-top: 70px;
 }
 
 .chat-bubble.left {
     background: #fff;
     color: #522504;
-    z-index: 1;
 }
 
 .chat-bubble.right {
@@ -144,29 +148,50 @@ body, html {
 #output-section {
     width: 90%;
     max-width: 1371px;
-    background: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin: 20px 0;
+    background: #FAFAF5;
+    position: relative;
+    height: 30%; /* Adjust height as needed */
 }
 
 #meal-plan {
-    margin-top: 10px;
+    margin-top: -10px;
     display: flex;
     overflow-x: auto;
+    padding-bottom: 20px;
 }
 
 .meal-card {
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 24px;
     margin: 10px;
     padding: 20px;
     flex: 0 0 auto;
+    width: 700px;
+    height: auto;
+    box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .meal-card h3 {
-    margin-top: 0;
     font-family: 'Nunito', sans-serif;
+    font-weight: 200;
+    font-size: 32px;
+    line-height: 130%;
+    color: #000;
+    margin-top: 0;
+}
+
+.meal-card p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: 20px;
+    line-height: 150%;
+    margin: 5px 0;
+}
+
+.meal-card p.meal strong {
+    margin-left: 80px;
+    font-weight: 400;
 }

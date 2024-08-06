@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const chatBox = document.getElementById('chat-box');
 
-    // Initialize the input event listener
     function initializeInputListener(inputElement) {
         inputElement.addEventListener('input', adjustHeight);
         inputElement.addEventListener('keypress', async (event) => {
@@ -9,32 +8,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.preventDefault();
                 const inputText = inputElement.value.trim();
                 if (inputText) {
-                    // Make the textarea uneditable and keep the shape
                     inputElement.setAttribute('readonly', true);
                     inputElement.style.height = 'auto';
                     inputElement.style.height = inputElement.scrollHeight + 'px';
-
-                    // Remove the focus outline
                     inputElement.style.outline = 'none';
 
-                    // Create a new agent response bubble
                     const agentBubble = document.createElement('div');
                     agentBubble.className = 'chat-bubble left';
                     agentBubble.innerHTML = '<p>...</p>';
                     chatBox.appendChild(agentBubble);
 
-                    // Scroll to the bottom of the chat box
                     chatBox.scrollTop = chatBox.scrollHeight;
 
-                    // Call the agent function
-                    const response = await call_agent(inputText);
+                    const response = await callAgent(inputText);
                     if (response && response.response) {
                         agentBubble.innerHTML = `<p>${response.response}</p>`;
+                        createMealPlan(response.meal_plan);
                     } else {
                         agentBubble.innerHTML = '<p>Sorry, I couldn\'t generate a meal plan. Please try again.</p>';
                     }
 
-                    // Create a new user input bubble
                     const newUserInputBubble = document.createElement('div');
                     newUserInputBubble.className = 'chat-bubble right';
                     newUserInputBubble.id = 'user-input-bubble';
@@ -44,22 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     newUserInputBubble.appendChild(newInput);
                     chatBox.appendChild(newUserInputBubble);
 
-                    // Update the user input variable and reinitialize the event listener
                     newInput.focus();
                     initializeInputListener(newInput);
+
+                    chatBox.scrollTop = chatBox.scrollHeight;
                 }
             }
         });
     }
 
-    // Adjust the height of the textarea dynamically
     function adjustHeight(event) {
         const textarea = event.target;
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
     }
 
-    // Focus the current input field on any keypress
     document.addEventListener('keypress', (event) => {
         const currentInput = document.querySelector('.chat-bubble.right textarea:not([readonly])');
         if (currentInput) {
@@ -67,12 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize the first input listener
     const initialInput = document.getElementById('user-input');
     initializeInputListener(initialInput);
 });
 
-async function call_agent(input) {
+async function callAgent(input) {
     try {
         const response = await fetch('/generate', {
             method: 'POST',
@@ -88,4 +79,36 @@ async function call_agent(input) {
         console.error('Error generating meal plan:', error);
         return null;
     }
+}
+
+function createMealPlan(mealPlan) {
+    const mealPlanContainer = document.getElementById('meal-plan');
+    mealPlanContainer.innerHTML = '';
+
+    mealPlan.days.forEach((day, index) => {
+        const mealCard = document.createElement('div');
+        mealCard.className = 'meal-card';
+
+        const dayLabel = document.createElement('h3');
+        dayLabel.textContent = day.day;
+
+        const breakfastLabel = document.createElement('p');
+        breakfastLabel.className = 'meal';
+        breakfastLabel.innerHTML = `<strong>Breakfast</strong> ${day.meals.breakfast}`;
+
+        const lunchLabel = document.createElement('p');
+        lunchLabel.className = 'meal';
+        lunchLabel.innerHTML = `<strong>Lunch</strong> ${day.meals.lunch}`;
+
+        const dinnerLabel = document.createElement('p');
+        dinnerLabel.className = 'meal';
+        dinnerLabel.innerHTML = `<strong>Dinner</strong> ${day.meals.dinner}`;
+
+        mealCard.appendChild(dayLabel);
+        mealCard.appendChild(breakfastLabel);
+        mealCard.appendChild(lunchLabel);
+        mealCard.appendChild(dinnerLabel);
+
+        mealPlanContainer.appendChild(mealCard);
+    });
 }
